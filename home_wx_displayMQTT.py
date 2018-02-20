@@ -56,9 +56,9 @@ local_mqtt_host = "localhost" # No place like home
 # we need to do it just once
 setRGB(0,255,0)
 # Variables for temperature thresholds.
-warmF = 74.0
+warmF = 73.0
 justRightF = 72.0
-coolF = 73.0
+coolF = 71.0
 
 # Function to convert Celsius to Fahrenheit
 def celToFahr(temp):
@@ -79,9 +79,9 @@ def buildJson(tempf, hum):
 
 # Function to connect publish to the MQTT broker (needs the hostname, temp and humidity inputs)
 def publishMQTT(host, tempf, hum):
-    local_client = mqtt.Client()
-    local_client.connect(host)
-    local_client.publish(mosquitto_org_topic, buildJson(tempf, hum))
+    pub_client = mqtt.Client()
+    pub_client.connect(host)
+    pub_client.publish(mosquitto_org_topic, buildJson(tempf, hum))
 
 while True:
         try:
