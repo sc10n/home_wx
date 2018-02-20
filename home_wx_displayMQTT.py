@@ -93,13 +93,13 @@ while True:
 
                 # Change the screen colors
                 if tempf >= warmF:
-                    logging.warning('I am warm')
+                    logging.info('I am warm')
                     setRGB(255, 0, 0)
                 elif tempf <= coolF:
-                    logging.warning("I am cool")
+                    logging.info("I am cool")
                     setRGB(0, 0, 255)
                 elif tempf == justRightF:
-                    logging.warning('I am just right')
+                    logging.info('I am just right')
                     setRGB(0, 255, 0)
                 # check if we have nans
                 # if so, then raise a type error exception
@@ -107,8 +107,6 @@ while True:
                         raise TypeError('nan error')
 
                 print("temp =", tempf, "F\thumidity =", hum,"%")
-
-
 
                 t = str(tempf)
                 h = str(hum)
@@ -122,7 +120,7 @@ while True:
 
         # instead of inserting a bunch of whitespace, we can just insert a \n
         # we're ensuring that if we get some strange strings on one line, the 2nd one won't be affected
-                setText_norefresh("Temp:" + t + "F\n" + "Humidity :" + h + "%")
+                setText_norefresh("Temp:" + str(t) + "F\n" + "Humidity :" + str(h) + "%")
 
                 sleep(1)
 
