@@ -47,7 +47,7 @@ import logging
 
 dht_sensor_port = 7 # connect the DHt sensor to port 7
 dht_sensor_type = 0 # use 0 for the blue-colored sensor and 1 for the white-colored sensor
-local_time = int(time.time()) # grabbing timestamp and converting to int
+ # grabbing timestamp and converting to int
 mosquitto_org_topic = "SNHU/IT697/james_thompson_snhu_edu/sensor/data/json" #MQTT Topic
 test_mosquitto_host = "test.mosquitto.org" #Remote test broker
 local_mqtt_host = "localhost" # No place like home
@@ -67,6 +67,7 @@ def celToFahr(temp):
 
 # Function to build the json data to publish
 def buildJson(tempf, hum):
+    local_time = int(time.time())
     data = {
         'timestamp': local_time,
         'data': {
