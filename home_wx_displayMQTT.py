@@ -45,6 +45,7 @@ import time
 import json
 import logging
 import grovepi
+import uuidgen
 
 dht_sensor_port = 7 # connect the DHt sensor to port 7
 dht_sensor_type = 0 # use 0 for the blue-colored sensor and 1 for the white-colored sensor
@@ -53,7 +54,11 @@ Relay_pin = 2
 
 pinMode(Relay_pin,"OUTPUT")
 
+# Generate UUID for this package
+
+
 # grabbing timestamp and converting to int
+mosquitto_org_topic2 = "SNHU/IT697/sensor/data/"+uuidgen.generateuid()
 mosquitto_org_topic = "SNHU/IT697/james_thompson_snhu_edu/sensor/data/json" #MQTT Topic
 test_mosquitto_host = "test.mosquitto.org" #Remote test broker
 local_mqtt_host = "localhost" # No place like home
@@ -100,7 +105,7 @@ def buildJson(tempf, hum, ra_value):
 def publishMQTT(host, tempf, hum, ra_value):
     pub_client = mqtt.Client()
     pub_client.connect(host)
-    pub_client.publish(mosquitto_org_topic, buildJson(tempf, hum, ra_value))
+    pub_client.publish(mosquitto_org_topic2, buildJson(tempf, hum, bright))
 
 #Function to convert radial sensor to a brightness value of the LED
 def ledBrightness(deg):
@@ -112,6 +117,7 @@ def ledBrightness(deg):
 while True:
     #Get the angular value of the potentiometer
     ra = grovepi.analogRead(pot)
+
     try:
     # get the temperature and Humidity from the DHT sensor
             [ temp,hum ] = dht(dht_sensor_port,dht_sensor_type)
@@ -142,11 +148,11 @@ while True:
             a = str(bright)
 
             # MQTT Publish to remote
-            # publishMQTT(test_mosquitto_host,tempf,hum,ra_value)
+            publishMQTT(test_mosquitto_host,tempf,hum,bright)
             # MQTT Publish to local
             publishMQTT(local_mqtt_host, tempf, hum, bright)
             # wait some time before re-updating the LCD
-            sleep(2.00)
+            sleep(5.00)
 
             # instead of inserting a bunch of whitespace, we can just insert a \n
             # we're ensuring that if we get some strange strings on one line, the 2nd one won't be affected
